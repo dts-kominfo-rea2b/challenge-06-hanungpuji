@@ -19,8 +19,6 @@ let modifyFile3 = (val) => {
 
 // TODO: Kerjakan bacaData
 // gunakan variabel file1, file2, dan file3
-let isiArrayFile = [];
-
 const loopingObject = (dataObject) => {
   let lengthData = dataObject.length;
   if (lengthData == undefined) {
@@ -29,35 +27,33 @@ const loopingObject = (dataObject) => {
 
   for (let i = 0; i <= lengthData; i++) {
     if (typeof(dataObject) === 'object' && lengthData == 0) {
-      return dataObject[Object.keys(dataObject)]
+      return splitData(dataObject[Object.keys(dataObject)])
     }else if(typeof(dataObject) === 'object' && lengthData > 0){
       let dataObject2 = dataObject[Object.keys(dataObject)]
       if (dataObject2.length === 0) {
         let objectKey = Object.keys(dataObject2);
-        return dataObject2[objectKey];
+        return splitData(dataObject2[objectKey]);
       }else{
         dataObject2 = dataObject2[Object.keys(dataObject2)]
         if(typeof(dataObject2) === 'object' && lengthData > 0){
           lengthData = dataObject2.length || 0
           for (let i = 0; i <= lengthData; i++) {
             objectKey = Object.keys(dataObject2);
-            return dataObject2[objectKey];
+            return splitData(dataObject2[objectKey]);
           }
         }else{
-          return dataObject2;
+          return splitData(dataObject2);
         }
         
       }
     }
-  
   }
-  
 }
 
 const parseData = (isiText) => {
   const data = JSON.parse(isiText);
   const resultLoop = loopingObject(data)
-  return splitData(resultLoop)
+  return resultLoop
 }
 
 const splitData = (isiData) => {
@@ -65,29 +61,21 @@ const splitData = (isiData) => {
   return hasil[1];
 }
 
-const bacaFile = (file, index, array) => {
-  fs.readFile(file, 'utf8', function(err, data){
-    if (err) {
-      console.log('error:' + err)
-    }else{
-      const hasilParse = parseData(data);
-    }  
-  });
-}
-
 const bacaData = (fnCallback) => {  
   const arrayFile = [file1,file2,file3];
+  let isiArrayFile = [];
   arrayFile.forEach((file, index, array) => { 
     fs.readFile(file, 'utf8', function(err, data){
       if (err) {
         console.log('error'+ err);
       }else{
-        const hasilParse = parseData(data);
-        if (!(isiArrayFile.includes(hasilParse))) {
+        let hasilParse = parseData(data);
+        // if (!(isiArrayFile.includes(hasilParse))) {
           isiArrayFile.push(hasilParse);
-        }
+        // }
         if (index == (arrayFile.length)-1) {
-          fnCallback(null,isiArrayFile);
+          fnCallback(err,isiArrayFile);
+          isiArrayFile = []
         }
       }  
     })
