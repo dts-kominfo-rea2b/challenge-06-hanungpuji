@@ -85,7 +85,7 @@ const bacaData = (fnCallback) => {
         const hasilParse = parseData(data);
         // array[index] = hasilParse
         isiArrayFile.push(hasilParse);
-        if (index == (arrayFile.length-1)) {
+        if (index+1 == (arrayFile.length)) {
           fnCallback(err,isiArrayFile);
         }
       }  
